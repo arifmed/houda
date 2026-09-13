@@ -29,7 +29,7 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken(
-            'clinic-mobile'
+            'aarifdev'
         )->plainTextToken;
 
         return response()->json([
