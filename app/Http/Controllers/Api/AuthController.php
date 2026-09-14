@@ -29,7 +29,15 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken(
-            'aarifdev'
+            'aarifdev',
+            [
+                'patient:read',
+                'patient:write',
+                'appointment:read',
+                'appointment:write',
+                'user:read',
+                'user:write',
+            ]
         )->plainTextToken;
 
         return response()->json([
