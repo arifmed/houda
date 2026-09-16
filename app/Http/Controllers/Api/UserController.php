@@ -17,7 +17,7 @@ class UserController extends Controller
          if ($users->isEmpty()) {
     return response()->json(); // OK, but no content
     }
-    return response()->json($users);
+    return response()->json($users,200);
 
     }
 
@@ -34,7 +34,8 @@ class UserController extends Controller
         ]);
 
         $user = User::create($request->all());
-        return response()->json($user);
+
+        return response()->json($user,201);
     }
 
     /**
@@ -43,7 +44,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
-        return response()->json($user);
+        return response()->json($user,200);
     }
 
     /**
@@ -53,7 +54,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->update($request->all());
-        return response()->json($user);
+        return response()->json($user,200);
     }
 
     /**
@@ -63,6 +64,6 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return response()->json($user);
+        return response()->json($user,204);
     }
 }
