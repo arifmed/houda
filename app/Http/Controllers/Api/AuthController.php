@@ -24,25 +24,17 @@ class AuthController extends Controller
             !Hash::check($credentials['password'], $user->password)
         ) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'email' => ['البريد الالكتروني او كلمة المرور غير صحيحة'],
             ]);
         }
 
         $token = $user->createToken(
-            'aarifdev',
-            [
-                'patient:read',
-                'patient:write',
-                'appointment:read',
-                'appointment:write',
-                'user:read',
-                'user:write',
-            ]
+            'aarifdev'
         )->plainTextToken;
 
         return response()->json([
             'success' => true,
-            'message' => 'Login successful',
+            'message' => 'تم تسجيل الدخول بنجاح',
             'data' => [
                 'user' => $user,
                 'token' => $token,
@@ -66,7 +58,7 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Logged out successfully',
+            'message' => 'تم تسجيل الخروج بنجاح',
         ]);
     }
 }
