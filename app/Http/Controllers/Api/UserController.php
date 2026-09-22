@@ -31,9 +31,15 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'role' => 'required|string',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = User::create($request->all());
+
+        if ($request->hasFile('avatar')) {
+            $user->addMedia($request->file('avatar'))
+                 ->toMediaCollection('avatar');
+        }
 
         return response()->json($user,201);
     }
