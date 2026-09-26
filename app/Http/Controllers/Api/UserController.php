@@ -25,24 +25,42 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'role' => 'required|string',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+        'role' => 'required|string',
+        'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        $user = User::create($request->all());
+    $avatarUrl = null;
 
-        if ($request->hasFile('avatar')) {
-            $user->addMedia($request->file('avatar'))
-                 ->toMediaCollection('avatar');
-        }
+    if ($request->hasFile('avatar')) {
 
-        return response()->json($user,201);
+        $path = $request->file('avatar')->store(
+            'avatar',
+            'public'
+        );
+
+        $avatarUrl = asset(
+            'storage/' . $path
+        );
     }
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+        'role' => $request->role,
+        'avatar' => $avatarUrl,
+    ]);
+
+    return response()->json(
+        $user,
+        201
+    );
+}
 
     /**
      * Display the specified resource.
