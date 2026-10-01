@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->decimal('consultation_fee', 10, 2)->default(0);
             $table->boolean('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

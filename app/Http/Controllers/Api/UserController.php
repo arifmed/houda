@@ -54,6 +54,7 @@ class UserController extends Controller
         'password' => bcrypt($request->password),
         'role' => $request->role,
         'avatar' => $avatarUrl,
+        
     ]);
 
     return response()->json(
@@ -74,12 +75,39 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $user = User::find($id);
-        $user->update($request->all());
-        return response()->json($user,200);
+    public function update(Request $request, $id)
+{
+    $user = User::find($id);
+
+    $avatarUrl = null;
+     if ($request->hasFile('avatar')) {
+        $path = $request->file('avatar')->store(
+            'avatar',
+            'public'
+        );
+        $avatarUrl = asset(
+            'storage/' . $path
+        );
     }
+
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->role = $request->role;
+    $user->avatar = $avatarUrl;
+    
+    
+
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
+    }
+    $user->is_active = $request->boolean('is_active');
+    $user->save();
+
+    return response()->json([
+        'message' => 'User updated successfully',
+        'user' => $user,
+    ]);
+}
 
     /**
      * Remove the specified resource from storage.

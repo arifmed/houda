@@ -32,6 +32,7 @@ return new class extends Migration
     ])->default('impayé');
 
     $table->date('invoice_date');
+    $table->softDeletes();
 
     $table->timestamps();
 });

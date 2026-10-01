@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('status', ['programmé', 'confirmé', 'annulé', 'terminé'])->default('programmé');
             $table->text('reason')->nullable();
             $table->text('notes')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

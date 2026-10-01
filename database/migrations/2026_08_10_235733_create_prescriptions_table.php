@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('frequency'); // مثال: 3 مرات يوميا
             $table->string('duration'); // مثال: 7 أيام
             $table->text('instructions')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

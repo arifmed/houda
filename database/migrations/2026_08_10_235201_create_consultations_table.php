@@ -24,6 +24,7 @@ return new class extends Migration
             $table->decimal('weight', 5, 2)->nullable();
             $table->decimal('height', 5, 2)->nullable();
             $table->string('blood_pressure')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
