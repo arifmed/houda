@@ -12,6 +12,7 @@ class Patient extends Model
     protected $fillable = [
         'first_name',
         'last_name',
+        'full_name',
         'date_of_birth',
         'gender',
         'phone',
@@ -21,6 +22,9 @@ class Patient extends Model
         'emergency_contact',
         'emergency_phone',
         'allergies',
+        'chronic_diseases',
+        'user_id',
+        
     ];
 
     protected function casts(): array
@@ -33,6 +37,11 @@ class Patient extends Model
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function medicalRecords()

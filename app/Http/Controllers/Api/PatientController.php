@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\PatientResource;
 
@@ -48,24 +49,26 @@ class PatientController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['nullable', 'date'],
-            'gender' => ['nullable', 'in:male,female'],
+            
             'phone' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255'],
             'address' => ['nullable', 'string'],
             'blood_type' => ['nullable', 'string', 'max:10'],
-            'emergency_contact' => ['nullable', 'string', 'max:255'],
-            'emergency_phone' => ['nullable', 'string', 'max:20'],
+
             'allergies' => ['nullable', 'string'],
         ]);
 
         $patient = Patient::create($validated);
+        $patient->user()->associate($request->user());
+        $patient->save();
 
-        return response()->json([
-    'success' => true,
-    'message' => 'Patient created successfully',
 
-    'data' => new PatientResource($patient),
-], 201);
+        return response()->json(
+        $patient,
+        201
+    );
+
+    
     }
 
     public function show(Patient $patient)

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\UserController;
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    
 
     Route::prefix('auth')->group(function () {
 
@@ -24,7 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     });
 
-    Route::apiResource(
+   Route::apiResource(
         'patients',
         PatientController::class
     );
@@ -33,18 +34,17 @@ Route::middleware('auth:sanctum')->group(function () {
         'appointments',
         AppointmentController::class
     );
-
-   
-
     
-
-
-
-});
- Route::apiResource(
+    Route::apiResource(
         'users',
         UserController::class
     );
+
+});
+
+
+ 
+    
 
 Route::prefix('auth')->group(function () {
 
@@ -53,8 +53,11 @@ Route::prefix('auth')->group(function () {
         'login'
     ]);
 
+  
+
     Route::get('/login', [AuthController::class, 'show'])->name('login');
 
 
 
 });
+
