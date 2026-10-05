@@ -49,68 +49,45 @@ class PatientController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['nullable', 'date'],
-            
+            'gender' => 'required|in:male,female,M,F,Homme,Femme',
             'phone' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255'],
             'address' => ['nullable', 'string'],
             'blood_type' => ['nullable', 'string', 'max:10'],
-
+            'emergency_contact_name' => ['nullable', 'string', 'max:255'],
+            'emergency_contact_phone' => ['nullable', 'string', 'max:200'],
             'allergies' => ['nullable', 'string'],
+            'chronic_diseases' => ['nullable', 'string'],
         ]);
 
         $patient = Patient::create($validated);
         $patient->user()->associate($request->user());
         $patient->save();
+        return response()->json($patient, 201)->back();
+    }
 
-
-        return response()->json(
-        $patient,
-        201
-    );
-
+    public function show($id)
+    {
+        try {
+            $patient = Patient::findOrFail($id);
+            
+            return response()->json($patient);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Patient not found',
+            ], 404);
+        }
+    }
     
-    }
 
-    public function show(Patient $patient)
+    public function update(Request $request, $id)
     {
-        return response()->json([
-    'success' => true,
-    'message' => 'Patient details retrieved successfully',
-
-    'data' => new PatientResource(
-        $patient->load([
-            'appointments',
-            'consultations',
-            'prescriptions',
-        ])
-    ),
-]);
-    }
-
-    public function update(Request $request, Patient $patient)
-    {
-        $validated = $request->validate([
-            'first_name' => ['sometimes', 'string', 'max:255'],
-            'last_name' => ['sometimes', 'string', 'max:255'],
-            'date_of_birth' => ['nullable', 'date'],
-            'gender' => ['nullable', 'in:male,female'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'address' => ['nullable', 'string'],
-            'blood_type' => ['nullable', 'string', 'max:10'],
-            'emergency_contact' => ['nullable', 'string', 'max:255'],
-            'emergency_phone' => ['nullable', 'string', 'max:20'],
-            'allergies' => ['nullable', 'string'],
-        ]);
-
-        $patient->update($validated);
-
-        return response()->json([
-    'success' => true,
-    'message' => 'Patient updated successfully',
-
-    'data' => new PatientResource($patient),
-]);
+        $patient = Patient::find($id);
+        $patient->update($request->all());
+        $patient->user()->associate($request->user());
+        $patient->save();
+        return response()->json($patient, 200);
     }
 
     public function destroy(Patient $patient)
