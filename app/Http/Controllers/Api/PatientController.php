@@ -63,7 +63,7 @@ class PatientController extends Controller
         $patient = Patient::create($validated);
         $patient->user()->associate($request->user());
         $patient->save();
-        return response()->json($patient, 201)->back();
+        return response()->json($patient, 201);
     }
 
     public function show($id)
@@ -90,13 +90,24 @@ class PatientController extends Controller
         return response()->json($patient, 200);
     }
 
-    public function destroy(Patient $patient)
-    {
-        $patient->delete();
+    public function destroy($id)
+{
+    $patient = Patient::find($id);
 
-       return response()->json([
-    'success' => true,
-    'message' => 'Patient deleted successfully',
-]);
+    // التحقق مما إذا كان المريض غير موجود
+    if (!$patient) {
+        return response()->json([
+            'success' => false,
+            'message' => 'المريض غير موجود أو تم حذفه مسبقاً.'
+        ], 404);
     }
+
+    $patient->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'تم حذف المريض بنجاح.',
+        'data' => $patient
+    ], 200);
+}
 }
