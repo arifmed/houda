@@ -29,6 +29,10 @@ Route::middleware('auth:sanctum')->group(function () {
         'patients',
         PatientController::class
     );
+    Route::apiResource(
+        'consultations',
+        ConsultationController::class
+    );
 
     Route::apiResource(
         'appointments',

@@ -15,15 +15,19 @@ return new class extends Migration
             $table->id();
             $table->foreignId('appointment_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
-            
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->dateTime('date');           
+            $table->string('type_consultation')->nullable();
             $table->text('symptoms')->nullable();
             $table->text('diagnosis')->nullable();
             $table->text('notes')->nullable();
+            $table->decimal('repos')->default(1); // مدة الراحة بالايام 
             $table->decimal('temperature', 4, 1)->nullable();
             $table->unsignedSmallInteger('heart_rate')->nullable();
             $table->decimal('weight', 5, 2)->nullable();
             $table->decimal('height', 5, 2)->nullable();
             $table->string('blood_pressure')->nullable();
+            
             $table->softDeletes();
             $table->timestamps();
         });

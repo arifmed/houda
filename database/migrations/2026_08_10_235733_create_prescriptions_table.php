@@ -11,10 +11,10 @@ return new class extends Migration
     {
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('medicament_id')->constrained()->onDelete('cascade');
             $table->foreignId('consultation_id')->constrained()->onDelete('cascade');
             $table->foreignId('patient_id')->constrained()->onDelete('cascade');
-            
             $table->string('dosage'); // مثال: 500mg
             $table->string('frequency'); // مثال: 3 مرات يوميا
             $table->string('duration'); // مثال: 7 أيام
