@@ -10,6 +10,7 @@ class Patient extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'user_id',
         'first_name',
         'last_name',
         'full_name',
@@ -23,7 +24,7 @@ class Patient extends Model
         'emergency_contact_phone',
         'allergies',
         'chronic_diseases',
-        'user_id',
+        
         
     ];
 

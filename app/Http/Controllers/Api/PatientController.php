@@ -24,7 +24,7 @@ class PatientController extends Controller
             });
         }
 
-        $patients = $query->latest()->paginate(20);
+        $patients = $query->latest()->paginate(5);
 
         return response()->json([
     'success' => true,
@@ -60,9 +60,10 @@ class PatientController extends Controller
             'chronic_diseases' => ['nullable', 'string'],
         ]);
 
+        $validated['user_id'] = auth()->id();
+
         $patient = Patient::create($validated);
-        $patient->user()->associate($request->user());
-        $patient->save();
+
         return response()->json($patient, 201);
     }
 

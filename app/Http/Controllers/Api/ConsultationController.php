@@ -13,10 +13,8 @@ class ConsultationController extends Controller
      */
     public function index()
     {
-        $consultations = Consultation::all();
-
-        return response()->json($consultations);
-        //
+     $consultations = Consultation::with('patient')->latest()->get();
+        return response()->json($consultations,200);    
     }
 
     /**
@@ -24,17 +22,23 @@ class ConsultationController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'patient_id' => 'required',
-            'user_id' => 'required',
             'date' => 'required',
             'type_consultation' => 'required',
             'symptoms' => 'required',
+            'notes' => 'nullable',
             'diagnosis' => 'required',
-            'repos'=> 'required',
-              
+            'temperature' => 'nullable',
+            'heart_rate' => 'nullable',
+            'weight' => 'nullable',
+            'height' => 'nullable',
+            'blood_pressure' => 'nullable',
+            'repos' => 'nullable',
         ]);
-        $consultation = Consultation::create($validatedData);
+
+        $validated['user_id'] = auth()->id();
+        $consultation = Consultation::create($validated);
         return response()->json($consultation,201);
     }
 

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('symptoms')->nullable();
             $table->text('diagnosis')->nullable();
             $table->text('notes')->nullable();
-            $table->decimal('repos')->default(1); // مدة الراحة بالايام 
+            $table->string('repos')->default(1); // مدة الراحة بالايام 
             $table->decimal('temperature', 4, 1)->nullable();
             $table->unsignedSmallInteger('heart_rate')->nullable();
             $table->decimal('weight', 5, 2)->nullable();
