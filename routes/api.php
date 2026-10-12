@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\ConsultationController;
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\PrescriptionController;
 
 
 
@@ -26,6 +27,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     });
 
+    Route::apiResource(
+        'prescriptions',
+        PrescriptionController::class
+    );
+
    Route::apiResource(
         'patients',
         PatientController::class
@@ -34,6 +40,8 @@ Route::middleware('auth:sanctum')->group(function () {
         'consultations',
         ConsultationController::class
     );
+
+   
 
     Route::apiResource(
         'appointments',
